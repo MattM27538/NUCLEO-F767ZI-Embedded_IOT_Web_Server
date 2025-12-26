@@ -5,6 +5,7 @@
 // Default mock implementation of the API callbacks
 
 #include "mongoose_glue.h"
+#include "main.h"
 
 // Authenticate user/password. Return access level for the authenticated user:
 //   0 - authentication error
@@ -76,10 +77,13 @@ void glue_get_state(struct state *data) {
 
 static struct leds s_leds = {false, true, false};
 void glue_get_leds(struct leds *data) {
-  *data = s_leds;  // Sync with your device
+//  *data = s_leds;  // Sync with your device
+	data->led1 = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7);
+
 }
 void glue_set_leds(struct leds *data) {
-  s_leds = *data; // Sync with your device
+//  s_leds = *data; // Sync with your device
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, data->led1);
 }
 
 static struct network_settings s_network_settings = {"192.168.0.42", "192.168.0.1", "255.255.255.0", true};
